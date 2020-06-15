@@ -15,7 +15,7 @@ class SpritesHandler {
     public $rowCount;
 
     public function __construct() {
-        $this->name = "travel-items";
+        $this->name = "sample-items";
 
         $this->inputDir = "samples/input";
         $this->outputDir = "samples/output";
