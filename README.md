@@ -58,10 +58,11 @@ $handler->createSampleHtml($collection); //optional
 ```html
 <html>
 <head>
-<link rel="stylesheet" href="css/travel-items.css"></head><body>
+    
+<link rel="stylesheet" href="css/sample-items.css"></head><body>
 
-<div class="travel-items-sprite travel-items-sprite-1" title="Item"></div>
-<div class="travel-items-sprite travel-items-sprite-2" title="Another Item"></div>
+<div class="sample-items-sprite sample-items-sprite-1" title="Item"></div>
+<div class="sample-items-sprite sample-items-sprite-2" title="Another Item"></div>
 
 </body></html>
 ```
