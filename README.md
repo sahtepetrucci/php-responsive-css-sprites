@@ -6,7 +6,8 @@ This tool uses **ImageMagick** librarry to generate a single sprite image based 
 In order this to work, you'll need to provide a collection of objects including id and *icon* fields.
 ***
 
-> :info: The downscaling (retina) part is not implemented yet.
+> :warning: The downscaling (retina) part is not implemented yet.
+
 > :warning: **The package is not tested in production**.
 
 ## Usage
