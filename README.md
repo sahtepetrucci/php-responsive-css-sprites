@@ -1,7 +1,8 @@
 # PHP Retina CSS Sprites Generator
 
 A quick and dirty CSS sprites generator. Built to be used with Laravel models.
-This tool uses **ImageMagick** librarry to generate a single sprite image based on a (database) collection entries.
+
+This tool uses **ImageMagick** library to generate a single sprite image based on a (database) collection entries.
 
 In order this to work, you'll need to provide a collection of objects including id and *icon* fields.
 ***
