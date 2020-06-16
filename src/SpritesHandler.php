@@ -15,7 +15,8 @@ class SpritesHandler {
     public $rowCount;
 
     public function __construct() {
-        $this->name = "sample-items";
+        $this->name = "items";
+        $this->keyword = "spr";
 
         $this->inputDir = "samples/input";
         $this->outputDir = "samples/output";
@@ -107,7 +108,7 @@ class SpritesHandler {
         $backgroundSizeX = $this->columnCount * 100;
         $backgroundSizeY = $this->rowCount * 100;
 
-        $cssContent = "." . $this->name . "-sprite {\n";
+        $cssContent = "." . $this->name . "-" . $this->keyword . " {\n";
         $cssContent.= "\tdisplay:inline-block;\n";
         $cssContent.= "\tbackground-image:url('../images/" . $this->name . ".png');\n";
         $cssContent.= "\tbackground-repeat:no-repeat;\n";
@@ -119,7 +120,7 @@ class SpritesHandler {
         $i = 0;
         foreach ($collection as $item):
             $i++;
-            $className = "." . $this->name . '-sprite-' . $item->id;
+            $className = "." . $this->name . '-' . $this->keyword . '-' . $item->id;
             $cssContent.="\n" . $className . "{background-position:" . $this->getPosition($i) . "}";
         endforeach;
 
@@ -185,7 +186,7 @@ class SpritesHandler {
         $content.= "</head><body>\n\n";
 
         foreach ($collection as $item):
-            $className = $this->name . "-sprite " . $this->name . '-sprite-' . $item->id;
+            $className = $this->name.'-'.$this->keyword.' '.$this->name.'-'.$this->keyword.'-' . $item->id;
             $content.= "<i class=\"" .$className . "\" title=\"" . $item->name . "\"></i>\n"; 
         endforeach;
 
