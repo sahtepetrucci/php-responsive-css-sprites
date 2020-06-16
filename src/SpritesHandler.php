@@ -24,6 +24,11 @@ class SpritesHandler {
         $this->itemsPerRow = 10;
     }
 
+    /**
+     * Throws an exception in case any file in the collection cannot be found in the filesystem 
+     * @param object $collection
+     * @return void
+     */
     public function checkExistance($collection)
     {
         foreach ($collection as $item):
@@ -34,6 +39,11 @@ class SpritesHandler {
         endforeach;
     }
 
+    /**
+     * Combines a collection's icons into an Imagick stack
+     * @param object $collection
+     * @return object $stack
+     */
     public function combine($collection)
     {
         $dir = __DIR__.'/../' . $this->inputDir;
@@ -41,18 +51,29 @@ class SpritesHandler {
         $stack->setBackgroundColor(new \ImagickPixel('transparent'));
 
         foreach ($collection as $item):
-            $stack->addImage(new \Imagick($dir . '/' . $item->icon));
+            $icon = new \Imagick($dir . '/' . $item->icon);
+            $icon->stripImage();
+
+            $width = $icon->getImageWidth ();
+            $height = $icon->getImageHeight ();
+
+            if ($width != $this->iconWidth or $height != $this->iconHeight) {
+                //$icon->scaleImage($this->iconWidth, $this->iconHeight, true);
+                $icon->resizeImage($this->iconWidth, $this->iconHeight, \Imagick::FILTER_BOX, 1); 
+            }
+
+            $stack->addImage($tempIcon ?? $icon);
+
         endforeach;
 
         return $stack;
     } 
 
     /**
-     * Generate a sprite by using icons in a collection
+     * Generates a sprite by using icons in a collection
      * @param object $collection
      * @return bool (true if successful)
      */
-
     public function generate($collection) {
         $dir = __DIR__.'/../' . $this->outputDir . '/images';
         $this->makeDir($dir);
@@ -74,14 +95,25 @@ class SpritesHandler {
 
     }
 
+    /**
+     * Writes down the CSS needed by the sprite elements
+     * @param object $collection
+     * @return void
+     */
     public function writeCss($collection) {
         $dir = __DIR__.'/../' . $this->outputDir . '/css';
         $this->makeDir($dir);
 
-        $cssContent = "." . $this->name . "-sprite {\n";
-        $cssContent.= "display:inline-block;background-image: url('../images/" . $this->name . ".png');\nbackground-repeat:no-repeat;\n";
+        $backgroundSizeX = $this->columnCount * 100;
+        $backgroundSizeY = $this->rowCount * 100;
 
-        $cssContent.="width:" . $this->iconWidth . "px;height:" . $this->iconHeight . "px;";
+        $cssContent = "." . $this->name . "-sprite {\n";
+        $cssContent.= "\tdisplay:inline-block;\n";
+        $cssContent.= "\tbackground-image:url('../images/" . $this->name . ".png');\n";
+        $cssContent.= "\tbackground-repeat:no-repeat;\n";
+        $cssContent.= "\tbackground-size:" . $backgroundSizeX . "% " . $backgroundSizeY  ."%;\n";
+        $cssContent.="\twidth:" . $this->iconWidth/2 . "px;height:" . $this->iconHeight/2 . "px;\n";        
+        $cssContent.="\tline-height:" . $this->iconHeight/2 . "px;";
         $cssContent.="\n}\n";
 
         $i = 0;
@@ -91,16 +123,29 @@ class SpritesHandler {
             $cssContent.="\n" . $className . "{background-position:" . $this->getPosition($i) . "}";
         endforeach;
 
+        $cssContent.= "\n\n/* A total of " . $i . " images are combined here. */";
+
         file_put_contents($dir . '/' . $this->name . '.css', $cssContent);
 
     }
 
+    /**
+     * Checks whether a dir exists, create it if not
+     * @param string $path
+     * @return bool
+     */
     public function makeDir($path)
     {
          return is_dir($path) || mkdir($path);
     }
 
-    public function getPosition($i) {
+    /**
+     * Gets percentage position of element $i within the sprite map
+     * @param int $i
+     * @param bool $inPixels
+     * @return string
+     */
+    public function getPosition($i, $inPixels = false) {
         $itemColumn = $i % $this->itemsPerRow; 
         if ($itemColumn == 0) { 
             $itemColumn = $this->itemsPerRow; 
@@ -110,19 +155,38 @@ class SpritesHandler {
         $itemPositionX = 0 - ($itemColumn-1)*$this->iconWidth;
         $itemPositionY = 0 - ($itemRow-1)*$this->iconHeight;
 
-        return $itemPositionX . 'px ' . $itemPositionY . 'px';
+        if ($inPixels) {
+            return $itemPositionX . 'px ' . $itemPositionY . 'px';
+        }
+
+        $fullWidth = $this->iconWidth * $this->columnCount;
+        $fullHeight = $this->iconHeight * $this->rowCount;
+
+        //I've applied the solution mentioned here: https://stackoverflow.com/a/23419418/8868758
+        $dividerX = $fullWidth - $this->iconWidth ? $fullWidth - $this->iconWidth : 1;
+        $dividerY = $fullHeight - $this->iconHeight ? $fullHeight - $this->iconHeight : 1;
+
+        $itemPositionXPerc = (abs($itemPositionX) / $dividerX) * 100;
+        $itemPositionYPerc = (abs($itemPositionY) / $dividerY) * 100;
+
+        return $itemPositionXPerc . '% ' . $itemPositionYPerc . '%';
+
     }
 
+    /**
+     * Generates sample HTML to showcase sprites
+     * @param object $collection
+     * @return void
+     */
     public function createSampleHtml($collection) {
         $dir = __DIR__.'/../' . $this->outputDir;
         $content = "<html>\n<head>\n";
         $content.= "<link rel=\"stylesheet\" href=\"css/" . $this->name . ".css\">";
         $content.= "</head><body>\n\n";
 
-
         foreach ($collection as $item):
             $className = $this->name . "-sprite " . $this->name . '-sprite-' . $item->id;
-            $content.= "<div class=\"" .$className . "\" title=\"" . $item->name . "\"></div>\n"; 
+            $content.= "<i class=\"" .$className . "\" title=\"" . $item->name . "\"></i>\n"; 
         endforeach;
 
         $content.= "\n\n</body></html>";
