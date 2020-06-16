@@ -1,12 +1,10 @@
 # PHP Retina CSS Sprites Generator
 
-A quick and dirty CSS sprites generator. Built to be used with Laravel models.
+A responsive CSS sprites generator. Built to be used with Laravel models.
 
 This tool uses **ImageMagick** library to generate a single sprite image based on a (database) collection entries.
 
 In order this to work, you'll need to provide a collection of objects including id and *icon* fields.
-
-> :warning: The downscaling part is not implemented yet.
 
 ## Usage
 
@@ -41,16 +39,19 @@ $handler->createSampleHtml($collection); //optional
 **CSS**
 
 ```css
-.sample-items-sprite {
-    display: inline-block;
-    background-image: url('../images/sample-items.png');
-    background-repeat: no-repeat;
-    width: 100px;
-    height: 100px;
+.items-spr {
+	display:inline-block;
+	background-image:url('../images/items.png');
+	background-repeat:no-repeat;
+	background-size:200% 100%;
+	width:50px;height:50px;
+	line-height:50px;
 }
 
-.sample-items-sprite-1 { background-position: 0px 0px }
-.sample-items-sprite-2 { background-position: -100px 0px }
+.items-spr-1{background-position:0% 0%}
+.items-spr-2{background-position:100% 0%}
+
+/* A total of 2 images are combined here. */
 ```
 
 **HTML** (Optional)
@@ -58,11 +59,14 @@ $handler->createSampleHtml($collection); //optional
 ```html
 <html>
 <head>
-    
-<link rel="stylesheet" href="css/sample-items.css"></head><body>
+<link rel="stylesheet" href="css/items.css"></head><body>
 
-<div class="sample-items-sprite sample-items-sprite-1" title="Item"></div>
-<div class="sample-items-sprite sample-items-sprite-2" title="Another Item"></div>
+<i class="items-spr items-spr-1" title="Item"></i>
+<i class="items-spr items-spr-2" title="Another Item"></i>
+<br /><br />
+
+<i style="width:25px;height:25px" class="items-spr items-spr-1" title="Item"></i>
+<i style="width:25px;height:25px" class="items-spr items-spr-2" title="Another Item"></i>
 
 </body></html>
 ```
