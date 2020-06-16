@@ -1,4 +1,4 @@
-# PHP Retina CSS Sprites Generator
+# PHP Responsive CSS Sprites Generator
 
 A responsive CSS sprites generator. Built to be used with Laravel models, but can be used separately.
 
