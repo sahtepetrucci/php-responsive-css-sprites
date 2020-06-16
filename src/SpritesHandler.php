@@ -190,15 +190,15 @@ class SpritesHandler {
             $content.= "<i class=\"" .$className . "\" title=\"" . $item->name . "\"></i>\n"; 
         endforeach;
 
-        $content.="<br /><br />";
+        $content.="<br /><br />\n\n";
 
         foreach ($collection as $item):
             $className = $this->name.'-'.$this->keyword.' '.$this->name.'-'.$this->keyword.'-' . $item->id;
-            $style = "width: " . $this->iconWidth/4 . "px;height: " . $this->iconHeight/4 . "px";
+            $style = "width:" . $this->iconWidth/4 . "px;height:" . $this->iconHeight/4 . "px";
             $content.= "<i style=\"" . $style . "\" class=\"" .$className . "\" title=\"" . $item->name . "\"></i>\n"; 
         endforeach;
 
-        $content.= "\n\n</body></html>";
+        $content.= "\n</body></html>";
         file_put_contents($dir . '/' . $this->name . '.html', $content);
     }
 
