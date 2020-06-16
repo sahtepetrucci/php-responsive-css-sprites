@@ -7,7 +7,8 @@ This tool:
 - prepares a CSS file (including one unique class per icon),
 - [optionally] creates a sample HTML file to demonstrate usage. 
 
-It is possible to change CSS width/height values of the <i> elements while keeping the background image obtained from the sprite. 
+
+It is possible to change CSS width/height values of the icons while keeping the background image obtained from the sprite. 
 
 ## Usage
 In order this to work, you'll need to provide a collection of objects including id and *icon* fields.
