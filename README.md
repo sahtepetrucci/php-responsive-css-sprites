@@ -1,6 +1,6 @@
 # PHP Retina CSS Sprites Generator
 
-A responsive CSS sprites generator. Built to be used with Laravel models.
+A responsive CSS sprites generator. Built to be used with Laravel models, but can be used separately.
 
 This tool uses **ImageMagick** library to generate a single sprite image based on a (database) collection entries.
 
