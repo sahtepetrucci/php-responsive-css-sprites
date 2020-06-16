@@ -1,21 +1,25 @@
 {
     "name": "sahtepetrucci/php-retina-css-sprites",
-    "description": "A quick and dirty CSS sprites generator. Built to be used with Laravel models.",
     "type": "library",
+    "description": "Responsive and retina-ready CSS sprites generator",
+    "keywords": ["sprite","css","responsive","retina","generator"],
+    "homepage": "https://github.com/sahtepetrucci/php-responsive-css-sprites",
+    "license": "MIT",
+        "authors": [
+        {
+            "name": "Serdar Cevher",
+            "email": "scevher@gmail.com",
+            "homepage": "https://www.serdarcevher.com",
+            "role": "Developer"
+        }
+    ],
     "require": {
         "php": ">=7.2",
-        "orbitale/imagemagick-php": ">=3.0"
+        "ext-imagick": "*"
     },
     "require-dev": {
         "phpunit/phpunit": ">=8.0"
     },
-    "license": "MIT",
-    "authors": [
-        {
-            "name": "Serdar Cevher",
-            "email": "scevher@gmail.com"
-        }
-    ],
     "autoload": {
         "psr-4": {
             "Sprites\\": "src"
@@ -31,5 +35,4 @@
     "scripts": {
         "test": "phpunit tests"
     }
-
 }
