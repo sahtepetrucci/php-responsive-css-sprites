@@ -1,6 +1,6 @@
-# PHP Responsive CSS Sprites Generator
+# PHP Responsive Retina CSS Sprites Generator
 
-A responsive CSS sprites generator. Built to be used with Laravel models, but can be used separately.
+A responsive and retina ready CSS sprites generator. Built to be used with Laravel models, but can be used separately as well.
 
 This tool:
 - generates a single sprite image based on a (database) collection entries by using **ImageMagick** library, 
@@ -14,7 +14,7 @@ It is possible to change CSS width/height values of the icons while keeping the 
 In order this to work, you'll need to provide a collection of objects including id and *icon* fields.
 
 ```php
-use Sprites\SpritesHandler;
+use Sahtepetrucci\SpritesGenerator\SpritesHandler;
 $handler = new SpritesHandler();
 $handler->generate($collection);
 ```
@@ -45,7 +45,7 @@ $handler->createSampleHtml($collection); //optional
 
 ```css
 .items-spr {
-	display:inline-block;
+	display:inline-block;vertical-align:middle;
 	background-image:url('../images/items.png');
 	background-repeat:no-repeat;
 	background-size:200% 100%;

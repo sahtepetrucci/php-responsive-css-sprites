@@ -1,9 +1,9 @@
 <?php
 
-namespace Sahtepetrucci\ResponsiveCssSprites\Laravel;
+namespace Sahtepetrucci\SpritesGenerator\Laravel;
 
 use Illuminate\Support\ServiceProvider as LaravelServiceProvider;
-use Sahtepetrucci\ResponsiveCssSprites\SpritesHandler as SpritesHandler;
+use Sahtepetrucci\SpritesGenerator\SpritesHandler as SpritesHandler;
 
 /**
  * Class SpritesServiceProvider

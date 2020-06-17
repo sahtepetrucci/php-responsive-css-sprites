@@ -1,6 +1,6 @@
 <?php
 
-namespace Sahtepetrucci\ResponsiveCssSprites;
+namespace Sahtepetrucci\SpritesGenerator;
 
 class SpritesHandler {
 

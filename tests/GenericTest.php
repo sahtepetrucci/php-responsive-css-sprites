@@ -8,7 +8,7 @@ class GenericTest extends TestCase
 
     public function setUp(): void
     {
-        $this->handler = new Sahtepetrucci\ResponsiveCssSprites\Handler();
+        $this->handler = new Sahtepetrucci\SpritesGenerator\Handler();
     }
 
     public function testResizingImages()
