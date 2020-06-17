@@ -108,7 +108,7 @@ class SpritesHandler {
         $backgroundSizeY = $this->rowCount * 100;
 
         $cssContent = "." . $this->name . "-" . $this->keyword . " {\n";
-        $cssContent.= "\tdisplay:inline-block;\n";
+        $cssContent.= "\tdisplay:inline-block;vertical-align:middle;\n";
         $cssContent.= "\tbackground-image:url('../images/" . $this->name . ".png');\n";
         $cssContent.= "\tbackground-repeat:no-repeat;\n";
         $cssContent.= "\tbackground-size:" . $backgroundSizeX . "% " . $backgroundSizeY  ."%;\n";
