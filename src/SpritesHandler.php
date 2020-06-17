@@ -81,7 +81,7 @@ class SpritesHandler {
         $this->checkExistance($collection);
         $stack = $this->combine($collection);
 
-        $this->itemCount = count((array) $collection);
+        $this->itemCount = is_countable($collection) ? count($collection) : count((array) $collection);
         $this->columnCount = $this->itemCount >= $this->itemsPerRow ? $this->itemsPerRow : $this->itemCount;
         $this->rowCount = ceil($this->itemCount / $this->itemsPerRow);
 
