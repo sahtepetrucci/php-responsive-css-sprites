@@ -4,7 +4,7 @@ require_once('init.php');
 use Sahtepetrucci\SpritesGenerator\SpritesHandler;
 $handler = new SpritesHandler();
 
-$collection = (object)[
+$collection = [
     (object)[
         'id' => 1,
         'name' => 'Item',
