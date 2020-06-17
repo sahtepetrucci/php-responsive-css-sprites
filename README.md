@@ -7,8 +7,12 @@ This tool:
 - prepares a CSS file (including one unique class per icon),
 - [optionally] creates a sample HTML file to demonstrate usage. 
 
+> :warning: Generated icons will be downscaled to look good on retina displays. So make sure using twice the size for iconWidth and iconHeight (use 64x64 if you want to display them as 32x32 icons). 
 
-It is possible to change CSS width/height values of the icons while keeping the background image obtained from the sprite. 
+Saying that, it is still possible to change CSS width/height values of the icons on the fly while keeping the background image obtained from the sprite. 
+
+Thus, you can define your own @media rules to use same sprites in different sizes if needed.
+
 
 ## Usage
 In order this to work, you'll need to provide a collection of objects including id and *icon* fields.
@@ -19,10 +23,10 @@ $handler = new SpritesHandler();
 $handler->generate($collection);
 ```
 
-## Examples
+## Example 1
 
 ```php
-$collection = (object)[
+$collection = [
     (object)[
         'id' => 1,
         'name' => 'Item',
@@ -75,5 +79,34 @@ $handler->createSampleHtml($collection); //optional
 
 </body></html>
 ```
+
+
+## Example 2 (Generating sprites in Laravel)
+```
+use Sahtepetrucci\SpritesGenerator\SpritesHandler;
+...
+
+$categories = Category::select('id','icon')->get();
+
+$handler = new SpritesHandler();
+$handler->name = 'categories';
+$handler->inputDir = storage_path('app/public/images/categories');
+$handler->outputDir = storage_path('app/public/sprites/categories');
+$handler->iconWidth = 64;
+$handler->iconHeight = 64;
+$handler->generate($categories);
+```
+
+### Using sprites in Blade
+```html
+<link href="{{ asset('storage/sprites/categories/css/categories.css') }}" rel="stylesheet">
+
+@foreach ($categories as $category)
+    <i class="categories-spr categories-spr-{{ $category->id }}" title="{{ $category->name }}"></i> 
+    {{ $category->name }}
+    <br />
+@endforeach
+```
+
 
 Sample icons are from [icons8.com](https://icons8.com).
