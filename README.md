@@ -13,6 +13,10 @@ Saying that, it is still possible to change CSS width/height values of the icons
 
 Thus, you can define your own @media rules to use same sprites in different sizes if needed.
 
+## Installation
+```
+composer require sahtepetrucci/responsive-retina-css-sprites
+```
 
 ## Usage
 In order this to work, you'll need to provide a collection of objects including id and *icon* fields.
