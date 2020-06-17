@@ -109,7 +109,7 @@ class SpritesHandler {
 
         $cssContent = "." . $this->name . "-" . $this->keyword . " {\n";
         $cssContent.= "\tdisplay:inline-block;vertical-align:middle;\n";
-        $cssContent.= "\tbackground-image:url('../images/" . $this->name . ".png');\n";
+        $cssContent.= "\tbackground-image:url('../images/" . $this->name . ".png?t=" . time() . "');\n";
         $cssContent.= "\tbackground-repeat:no-repeat;\n";
         $cssContent.= "\tbackground-size:" . $backgroundSizeX . "% " . $backgroundSizeY  ."%;\n";
         $cssContent.="\twidth:" . $this->iconWidth/2 . "px;height:" . $this->iconHeight/2 . "px;\n";        
