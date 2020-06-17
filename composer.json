@@ -1,8 +1,8 @@
 {
-    "name": "sahtepetrucci/php-retina-css-sprites",
+    "name": "sahtepetrucci/php-responsive-css-sprites",
     "type": "library",
     "description": "Responsive and retina-ready CSS sprites generator",
-    "keywords": ["sprite","css","responsive","retina","generator"],
+    "keywords": ["sprite","css","responsive","retina","generator","png","icon"],
     "homepage": "https://github.com/sahtepetrucci/php-responsive-css-sprites",
     "license": "MIT",
         "authors": [
@@ -22,13 +22,13 @@
     },
     "autoload": {
         "psr-4": {
-            "Sprites\\": "src"
+            "Sahtepetrucci\\ResponsiveCssSprites\\": "src"
         }
     },
     "extra": {
         "laravel": {
             "providers": [
-                "Sprites\\SpritesServiceProvider"
+                "Sahtepetrucci\\ResponsiveCssSprites\\Laravel\\ServiceProvider"
             ]
         }
     },

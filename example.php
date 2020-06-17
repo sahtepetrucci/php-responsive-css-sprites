@@ -1,7 +1,7 @@
 <?php
 require_once('init.php');
 
-use Sprites\SpritesHandler;
+use Sahtepetrucci\ResponsiveCssSprites\SpritesHandler;
 $handler = new SpritesHandler();
 
 $collection = (object)[

@@ -1,6 +1,6 @@
 <?php
 
-namespace Sprites;
+namespace Sahtepetrucci\ResponsiveCssSprites;
 
 class SpritesHandler {
 
@@ -18,8 +18,8 @@ class SpritesHandler {
         $this->name = "items";
         $this->keyword = "spr";
 
-        $this->inputDir = "samples/input";
-        $this->outputDir = "samples/output";
+        $this->inputDir = __DIR__ . '/../samples/input';
+        $this->outputDir = __DIR__ . '/../samples/output';
         $this->iconWidth = 100;
         $this->iconHeight = 100;
         $this->itemsPerRow = 10;
@@ -33,7 +33,7 @@ class SpritesHandler {
     public function checkExistance($collection)
     {
         foreach ($collection as $item):
-            $path = __DIR__.'/../' . $this->inputDir . '/' . $item->icon;
+            $path = $this->inputDir . '/' . $item->icon;
             if (!file_exists($path)) {
                 throw new \Exception ('File not found. Check the path: ' . $path);
             }
@@ -47,12 +47,11 @@ class SpritesHandler {
      */
     public function combine($collection)
     {
-        $dir = __DIR__.'/../' . $this->inputDir;
         $stack = new \Imagick();
         $stack->setBackgroundColor(new \ImagickPixel('transparent'));
 
         foreach ($collection as $item):
-            $icon = new \Imagick($dir . '/' . $item->icon);
+            $icon = new \Imagick($this->inputDir . '/' . $item->icon);
             $icon->stripImage();
 
             $width = $icon->getImageWidth ();
@@ -76,7 +75,7 @@ class SpritesHandler {
      * @return bool (true if successful)
      */
     public function generate($collection) {
-        $dir = __DIR__.'/../' . $this->outputDir . '/images';
+        $dir = $this->outputDir . '/images';
         $this->makeDir($dir);
 
         $this->checkExistance($collection);
@@ -102,7 +101,7 @@ class SpritesHandler {
      * @return void
      */
     public function writeCss($collection) {
-        $dir = __DIR__.'/../' . $this->outputDir . '/css';
+        $dir = $this->outputDir . '/css';
         $this->makeDir($dir);
 
         $backgroundSizeX = $this->columnCount * 100;
@@ -137,7 +136,7 @@ class SpritesHandler {
      */
     public function makeDir($path)
     {
-         return is_dir($path) || mkdir($path);
+        return is_dir($path) || mkdir($path, 0775, true);
     }
 
     /**
@@ -180,7 +179,7 @@ class SpritesHandler {
      * @return void
      */
     public function createSampleHtml($collection) {
-        $dir = __DIR__.'/../' . $this->outputDir;
+        $dir = $this->outputDir;
         $content = "<html>\n<head>\n";
         $content.= "<link rel=\"stylesheet\" href=\"css/" . $this->name . ".css\">";
         $content.= "</head><body>\n\n";

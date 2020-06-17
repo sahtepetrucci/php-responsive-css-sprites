@@ -1,16 +1,14 @@
 <?php
-namespace Sprites\Tests;
 
-use Sprites\SpritesHandler;
 use PHPUnit\Framework\TestCase;
 
-class SpritesTest extends TestCase
+class GenericTest extends TestCase
 {
     protected $handler;
 
     public function setUp(): void
     {
-        $this->handler = new SpritesHandler();
+        $this->handler = new Sahtepetrucci\ResponsiveCssSprites\Handler();
     }
 
     public function testResizingImages()
