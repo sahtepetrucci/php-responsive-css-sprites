@@ -89,10 +89,17 @@ class SpritesHandler {
         $imageGrid = $this->columnCount."x".$this->rowCount;
 
         $montage = $stack->montageImage(new \ImagickDraw(), $imageGrid, $imageDimensions, 0, 0);
-        $montage->writeImage($dir . '/' . $this->name . '.png');
+        $montage->writeImage($dir . '/' . $this->name . '-2x.png');
+
+        $bigImage = new \Imagick($dir . '/' . $this->name . '-2x.png');
+        $smallImage = clone $bigImage;
+        $smallImage->resizeImage(
+            $bigImage->getImageWidth()/2, 
+            $bigImage->getImageHeight()/2, \Imagick::FILTER_BOX, 1, true
+        );
+        $smallImage->writeImage($dir . '/' . $this->name . '-1x.png');
 
         $this->writeCss($collection);
-
     }
 
     /**
@@ -107,14 +114,31 @@ class SpritesHandler {
         $backgroundSizeX = $this->columnCount * 100;
         $backgroundSizeY = $this->rowCount * 100;
 
-        $cssContent = "." . $this->name . "-" . $this->keyword . " {\n";
+        // Here we got some help from: https://coderwall.com/p/jlrerg/hd-retina-display-media-queries
+
+        $cssContent = "/* Normal Resolution CSS /*/\n";
+        $cssContent.= "." . $this->name . "-" . $this->keyword . " {\n";
         $cssContent.= "\tdisplay:inline-block;vertical-align:middle;\n";
-        $cssContent.= "\tbackground-image:url('../images/" . $this->name . ".png?t=" . time() . "');\n";
+        $cssContent.= "\tbackground-image:url('../images/" . $this->name . "-1x.png?t=" . time() . "');\n";
         $cssContent.= "\tbackground-repeat:no-repeat;\n";
         $cssContent.= "\tbackground-size:" . $backgroundSizeX . "% " . $backgroundSizeY  ."%;\n";
         $cssContent.="\twidth:" . $this->iconWidth/2 . "px;height:" . $this->iconHeight/2 . "px;\n";        
         $cssContent.="\tline-height:" . $this->iconHeight/2 . "px;";
-        $cssContent.="\n}\n";
+        $cssContent.="\n}\n\n";
+
+        $cssContent.= "/* HD/Retina CSS /*/\n";
+        $cssContent.= "@media\n";
+        $cssContent.="only screen and (-webkit-min-device-pixel-ratio: 1.25),";
+        $cssContent.="only screen and ( min--moz-device-pixel-ratio: 1.25),\n";
+        $cssContent.="only screen and ( -o-min-device-pixel-ratio: 1.25/1),\n";
+        $cssContent.="only screen and ( min-device-pixel-ratio: 1.25),\n";
+        $cssContent.="only screen and ( min-resolution: 200dpi),\n";
+        $cssContent.="only screen and ( min-resolution: 1.25dppx)\n";
+        $cssContent.="{\n";
+        $cssContent.= "    ." . $this->name . "-" . $this->keyword . " {\n";
+        $cssContent.= "       \tbackground-image:url('../images/" . $this->name . "-2x.png?t=" . time() . "');\n";
+        $cssContent.= "    }\n";
+        $cssContent.="}\n";
 
         $i = 0;
         foreach ($collection as $item):
