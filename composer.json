@@ -3,7 +3,7 @@
     "type": "library",
     "description": "Responsive and retina-ready CSS sprites generator",
     "keywords": ["sprite","css","responsive","retina","generator","png","icon"],
-    "homepage": "https://github.com/sahtepetrucci/responsive-retina-css-sprites",
+    "homepage": "https://github.com/serdarcevher/responsive-retina-css-sprites",
     "license": "MIT",
         "authors": [
         {
