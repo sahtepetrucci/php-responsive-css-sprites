@@ -13,6 +13,7 @@ class SpritesHandler {
     public $itemCount;
     public $columnCount;
     public $rowCount;
+    public $collection;
 
     public function __construct() {
         $this->name = "items";
@@ -23,37 +24,35 @@ class SpritesHandler {
         $this->iconWidth = 100;
         $this->iconHeight = 100;
         $this->itemsPerRow = 10;
+        $this->collection = [];
     }
 
     /**
      * Throws an exception in case any file in the collection cannot be found in the filesystem 
-     * @param object $collection
      * @return void
      */
-    public function checkExistance($collection)
+    public function prepareCollection()
     {
-        foreach ($collection as $item):
+        foreach ($this->collection as $key => $item):
             $path = $this->inputDir . '/' . $item->icon;
-            if (!file_exists($path)) {
-                error_log('File not found. Check the path: ' . $path . ' for item with id = ' . $item->id);
+            if (!$item->icon || !file_exists($path)) {
+
+                unset($this->collection[$key]);
+                error_log('File not found. Item skipped. Check the path: ' . $path . ' for item with id = ' . $item->id);
             }
         endforeach;
     }
 
     /**
-     * Combines a collection's icons into an Imagick stack
-     * @param object $collection
+     * Combines the collection's icons into an Imagick stack
      * @return object $stack
      */
-    public function combine($collection)
+    public function combine()
     {
         $stack = new \Imagick();
         $stack->setBackgroundColor(new \ImagickPixel('transparent'));
 
-        foreach ($collection as $item):
-            if (!$item->icon || !file_exists($this->inputDir . '/' . $item->icon)) {
-                continue;
-            }
+        foreach ($this->collection as $item):
             
             $icon = new \Imagick($this->inputDir . '/' . $item->icon);
             $icon->stripImage();
@@ -75,17 +74,18 @@ class SpritesHandler {
 
     /**
      * Generates a sprite by using icons in a collection
-     * @param object $collection
+     * @param array $collection
      * @return bool (true if successful)
      */
     public function generate($collection) {
+        $this->collection = $collection;
         $dir = $this->outputDir . '/images';
         $this->makeDir($dir);
 
-        $this->checkExistance($collection);
-        $stack = $this->combine($collection);
+        $this->prepareCollection();
+        $stack = $this->combine();
 
-        $this->itemCount = is_countable($collection) ? count($collection) : count((array) $collection);
+        $this->itemCount = is_countable($this->collection) ? count($this->collection) : count((array) $this->collection);
         $this->columnCount = $this->itemCount >= $this->itemsPerRow ? $this->itemsPerRow : $this->itemCount;
         $this->rowCount = ceil($this->itemCount / $this->itemsPerRow);
 
@@ -103,15 +103,14 @@ class SpritesHandler {
         );
         $smallImage->writeImage($dir . '/' . $this->name . '-1x.png');
 
-        $this->writeCss($collection);
+        $this->writeCss();
     }
 
     /**
      * Writes down the CSS needed by the sprite elements
-     * @param object $collection
      * @return void
      */
-    public function writeCss($collection) {
+    public function writeCss() {
         $dir = $this->outputDir . '/css';
         $this->makeDir($dir);
 
@@ -141,11 +140,12 @@ class SpritesHandler {
         $cssContent.="{\n";
         $cssContent.= "    ." . $this->name . "-" . $this->keyword . " {\n";
         $cssContent.= "       \tbackground-image:url('../images/" . $this->name . "-2x.png?t=" . time() . "');\n";
+        $cssContent.= "       \tbackground-position:-" . $this->iconWidth*4 . "px -" . $this->iconHeight*4 . "px;\n";
         $cssContent.= "    }\n";
         $cssContent.="}\n";
 
         $i = 0;
-        foreach ($collection as $item):
+        foreach ($this->collection as $item):
             $i++;
             $className = "." . $this->name . '-' . $this->keyword . '-' . $item->id;
             $cssContent.="\n" . $className . "{background-position:" . $this->getPosition($i) . "}";
@@ -203,23 +203,22 @@ class SpritesHandler {
 
     /**
      * Generates sample HTML to showcase sprites
-     * @param object $collection
      * @return void
      */
-    public function createSampleHtml($collection) {
+    public function createSampleHtml() {
         $dir = $this->outputDir;
         $content = "<html>\n<head>\n";
         $content.= "<link rel=\"stylesheet\" href=\"css/" . $this->name . ".css\">";
         $content.= "</head><body>\n\n";
 
-        foreach ($collection as $item):
+        foreach ($this->collection as $item):
             $className = $this->name.'-'.$this->keyword.' '.$this->name.'-'.$this->keyword.'-' . $item->id;
             $content.= "<i class=\"" .$className . "\" title=\"" . $item->name . "\"></i>\n"; 
         endforeach;
 
         $content.="<br /><br />\n\n";
 
-        foreach ($collection as $item):
+        foreach ($this->collection as $item):
             $className = $this->name.'-'.$this->keyword.' '.$this->name.'-'.$this->keyword.'-' . $item->id;
             $style = "width:" . $this->iconWidth/4 . "px;height:" . $this->iconHeight/4 . "px";
             $content.= "<i style=\"" . $style . "\" class=\"" .$className . "\" title=\"" . $item->name . "\"></i>\n"; 
