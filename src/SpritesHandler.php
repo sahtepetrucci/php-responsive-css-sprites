@@ -35,7 +35,7 @@ class SpritesHandler {
         foreach ($collection as $item):
             $path = $this->inputDir . '/' . $item->icon;
             if (!file_exists($path)) {
-                throw new \Exception ('File not found. Check the path: ' . $path);
+                error_log('File not found. Check the path: ' . $path . ' for item with id = ' . $item->id);
             }
         endforeach;
     }
@@ -51,6 +51,10 @@ class SpritesHandler {
         $stack->setBackgroundColor(new \ImagickPixel('transparent'));
 
         foreach ($collection as $item):
+            if (!$item->icon || !file_exists($this->inputDir . '/' . $item->icon)) {
+                continue;
+            }
+            
             $icon = new \Imagick($this->inputDir . '/' . $item->icon);
             $icon->stripImage();
 
