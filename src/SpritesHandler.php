@@ -149,6 +149,7 @@ class SpritesHandler {
         $cssContent.="{\n";
         $cssContent.= "    ." . $this->name . "-" . $this->keyword . " {\n";
         $cssContent.= "       \tbackground-image:url('../images/" . $this->name . "-2x.png?t=" . time() . "');\n";
+        $cssContent.= "       \tbackground-position:" . $this->iconWidth . "px " . $this->iconHeight . "px;\n";
         $cssContent.= "    }\n";
         $cssContent.="}\n";
 
