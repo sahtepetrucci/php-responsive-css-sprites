@@ -34,10 +34,15 @@ class SpritesHandler {
     public function prepareCollection()
     {
         foreach ($this->collection as $key => $item):
-            $path = $this->inputDir . '/' . $item->icon;
-            if (!$item->icon || !file_exists($path)) {
 
+            if (!$item->icon) {
                 unset($this->collection[$key]);
+                continue;
+            }
+
+            $path = $this->inputDir . '/' . $item->icon;
+
+            if (!file_exists($path)) {
                 error_log('File not found. Item skipped. Check the path: ' . $path . ' for item with id = ' . $item->id);
             }
         endforeach;
@@ -54,7 +59,11 @@ class SpritesHandler {
 
         foreach ($this->collection as $item):
             
-            $icon = new \Imagick($this->inputDir . '/' . $item->icon);
+            try {
+                $icon = new \Imagick($this->inputDir . '/' . $item->icon);
+            } catch (\Exception $e) {
+                $icon = new \Imagick(); $icon->newImage($this->iconWidth, $this->iconHeight, new \ImagickPixel('rgba(255,255,255,0)'));
+            }
             $icon->stripImage();
 
             $width = $icon->getImageWidth ();
@@ -140,7 +149,6 @@ class SpritesHandler {
         $cssContent.="{\n";
         $cssContent.= "    ." . $this->name . "-" . $this->keyword . " {\n";
         $cssContent.= "       \tbackground-image:url('../images/" . $this->name . "-2x.png?t=" . time() . "');\n";
-        $cssContent.= "       \tbackground-position:-" . $this->iconWidth*4 . "px -" . $this->iconHeight*4 . "px;\n";
         $cssContent.= "    }\n";
         $cssContent.="}\n";
 
